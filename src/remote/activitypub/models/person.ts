@@ -3,7 +3,7 @@ import * as promiseLimit from 'promise-limit';
 import config from '../../../config';
 import Resolver from '../resolver';
 import { resolveImage } from './image';
-import { isCollectionOrOrderedCollection, isCollection, IPerson, getApId, getOneApHrefNullable, IObject, isPropertyValue, IApPropertyValue } from '../type';
+import { isOrderedCollectionPage, isCollection, IPerson, getApId, getOneApHrefNullable, IObject, isPropertyValue, IApPropertyValue, isOrderedCollection, isCollectionOrOrderedCollection, isCreate, isPost } from '../type';
 import { fromHtml } from '../../../mfm/from-html';
 import { htmlToMfm } from '../misc/html-to-mfm';
 import { resolveNote, extractEmojis } from './note';
@@ -158,6 +158,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				host,
 				inbox: person.inbox,
 				sharedInbox: person.sharedInbox || (person.endpoints ? person.endpoints.sharedInbox : undefined),
+				outbox: typeof person.outbox === 'string' ? person.outbox : undefined,
 				featured: person.featured ? getApId(person.featured) : undefined,
 				uri: person.id,
 				tags,
@@ -261,6 +262,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	await updateFeatured(user!.id).catch(err => logger.error(err));
 
+	fetchOutbox(user!);
 	return user!;
 }
 
@@ -329,6 +331,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		lastFetchedAt: new Date(),
 		inbox: person.inbox,
 		sharedInbox: person.sharedInbox || (person.endpoints ? person.endpoints.sharedInbox : undefined),
+		outbox: typeof person.outbox === 'string' ? person.outbox : undefined,
 		featured: person.featured,
 		emojis: emojiNames,
 		name: person.name,
@@ -377,6 +380,8 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	});
 
 	await updateFeatured(exist.id).catch(err => logger.error(err));
+
+	fetchOutbox(exist!);
 }
 
 /**
@@ -488,5 +493,57 @@ export async function updateFeatured(userId: User['id']) {
 			userId: user.id,
 			noteId: note!.id
 		} as UserNotePining);
+	}
+}
+
+export async function fetchOutbox(user: User) {
+	if (!Users.isRemoteUser(user)) return;
+	if (!user.outbox) {
+		logger.debug(`no outbox for ${user.username}@${user.host}`);
+		return;
+	}
+
+	logger.info(`Updating the outbox: ${user.outbox}`);
+
+	const resolver = new Resolver();
+
+	// Fetch activities from outbox (first page only)
+	let unresolvedActivities: (IObject | string)[];
+
+	const collection = await resolver.resolveCollection(user.outbox);
+	if (!isOrderedCollection(collection)) throw new Error(`Object is not an OrderedCollection`);
+
+	if (collection.orderedItems) {
+		unresolvedActivities = collection.orderedItems;
+	} else if (collection.first) {
+		const page = await resolver.resolveCollection(collection.first);
+		if (isOrderedCollectionPage(page)) {
+			unresolvedActivities = page.orderedItems;
+		}
+	}
+
+	if (!unresolvedActivities) throw new Error('Can not fetch outbox items');
+
+	// Process activities
+	let itemCount = 0;
+	for (const unresolvedActivity of unresolvedActivities) {
+		const activity = await resolver.resolve(unresolvedActivity);
+
+		if (isCreate(activity)) {
+			const object = await resolver.resolve(activity.object);
+			if (isPost(object)) {
+				// Note
+				if (object.inReplyTo) {
+					// skip reply
+				} else if (object._misskey_quote || object.quoteUrl) {
+					// skip quote
+				} else {
+					if (++itemCount > 50) break;
+					await resolveNote(object, resolver);
+				}
+			}
+		} else {
+			// skip Announce etc
+		}
 	}
 }

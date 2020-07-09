@@ -1,5 +1,5 @@
 import { getJson } from '../../misc/fetch';
-import { IObject, isCollectionOrOrderedCollection, ICollection, IOrderedCollection } from './type';
+import { IObject, isCollection, isOrderedCollection, isCollectionPage, isOrderedCollectionPage } from './type';
 
 export default class Resolver {
 	private history: Set<string>;
@@ -12,12 +12,12 @@ export default class Resolver {
 		return Array.from(this.history);
 	}
 
-	public async resolveCollection(value: string | IObject): Promise<ICollection | IOrderedCollection> {
+	public async resolveCollection(value: string | IObject) {
 		const collection = typeof value === 'string'
 			? await this.resolve(value)
 			: value;
 
-		if (isCollectionOrOrderedCollection(collection)) {
+		if (isCollection(collection) || isOrderedCollection(collection) || isCollectionPage(collection) || isOrderedCollectionPage(collection)) {
 			return collection;
 		} else {
 			throw new Error(`unknown collection type: ${collection.type}`);

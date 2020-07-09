@@ -81,16 +81,49 @@ export interface IActivity extends IObject {
 export interface ICollection extends IObject {
 	type: 'Collection';
 	totalItems: number;
-	items: ApObject;
+	items?: ApObject;
+	current?: ICollectionPage;
+	first?: ICollectionPage;
+	last?: ICollectionPage;
+}
+
+export interface ICollectionPage extends IObject {
+	type: 'CollectionPage';
+	totalItems: number;
+	items?: (IObject | string)[];
+	current?: ICollectionPage;
+	first?: ICollectionPage;
+	last?: ICollectionPage;	partOf: string;
+	next?: ICollectionPage;
+	prev?: ICollectionPage;
 }
 
 export interface IOrderedCollection extends IObject {
 	type: 'OrderedCollection';
 	totalItems: number;
-	orderedItems: ApObject;
+	orderedItems?: (IObject | string)[];
+	current?: IOrderedCollectionPage;
+	first?: IOrderedCollectionPage;
+	last?: IOrderedCollectionPage;
+}
+
+export interface IOrderedCollectionPage extends IObject {
+	type: 'OrderedCollectionPage';
+	totalItems: number;
+	orderedItems?: (IObject | string)[];
+	current?: IOrderedCollectionPage;
+	first?: IOrderedCollectionPage;
+	last?: IOrderedCollectionPage;
+	partOf: string;
+	next?: IOrderedCollectionPage;
+	prev?: IOrderedCollectionPage;
+	startIndex?: number;
 }
 
 export const validPost = ['Note', 'Question', 'Article', 'Audio', 'Document', 'Image', 'Page', 'Video', 'Event'];
+
+export const isPost = (object: IObject): object is IPost =>
+	validPost.includes(object.type);
 
 export interface IPost extends IObject {
 	type: 'Note' | 'Question' | 'Article' | 'Audio' | 'Document' | 'Image' | 'Page' | 'Video' | 'Event';
@@ -149,6 +182,12 @@ export const isCollection = (object: IObject): object is ICollection =>
 
 export const isOrderedCollection = (object: IObject): object is IOrderedCollection =>
 	object.type === 'OrderedCollection';
+
+export const isCollectionPage = (object: IObject): object is ICollectionPage =>
+	object.type === 'CollectionPage';
+
+export const isOrderedCollectionPage = (object: IObject): object is IOrderedCollectionPage =>
+	object.type === 'OrderedCollectionPage';
 
 export const isCollectionOrOrderedCollection = (object: IObject): object is ICollection | IOrderedCollection =>
 	isCollection(object) || isOrderedCollection(object);
