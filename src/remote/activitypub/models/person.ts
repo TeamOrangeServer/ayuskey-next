@@ -526,6 +526,7 @@ export async function fetchOutbox(user: User) {
 
 	// Process activities
 	let itemCount = 0;
+	let refCount = 0;
 	for (const unresolvedActivity of unresolvedActivities) {
 		const activity = await resolver.resolve(unresolvedActivity);
 
@@ -534,8 +535,12 @@ export async function fetchOutbox(user: User) {
 			if (isPost(object)) {
 				// Note
 				if (object.inReplyTo) {
+					if (++refCount > 3) break;
+					await resolveNote(object, resolver);
 					// skip reply
 				} else if (object._misskey_quote || object.quoteUrl) {
+					if (++refCount > 3) break;
+					await resolveNote(object, resolver);
 					// skip quote
 				} else {
 					if (++itemCount > 50) break;
