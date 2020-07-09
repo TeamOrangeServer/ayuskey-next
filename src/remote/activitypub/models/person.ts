@@ -535,11 +535,11 @@ export async function fetchOutbox(user: User) {
 			if (isPost(object)) {
 				// Note
 				if (object.inReplyTo) {
-					if (++refCount > 3) break;
+					if (++refCount > 1) break;
 					await resolveNote(object, resolver);
 					// skip reply
 				} else if (object._misskey_quote || object.quoteUrl) {
-					if (++refCount > 3) break;
+					if (++refCount > 1) break;
 					await resolveNote(object, resolver);
 					// skip quote
 				} else {
