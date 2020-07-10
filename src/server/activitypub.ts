@@ -18,6 +18,7 @@ import { ILocalUser, User } from '../models/entities/user';
 import { In } from 'typeorm';
 import { ensure } from '../prelude/ensure';
 import { renderLike } from '../remote/activitypub/renderer/like';
+import { inspect } from 'util';
 
 // Init router
 const router = new Router();
@@ -30,6 +31,7 @@ function inbox(ctx: Router.RouterContext) {
 	try {
 		signature = httpSignature.parseRequest(ctx.req, { 'headers': [] });
 	} catch (e) {
+		console.log(`signature parse error: ${inspect(e)}`);
 		ctx.status = 401;
 		return;
 	}
