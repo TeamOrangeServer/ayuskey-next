@@ -265,7 +265,7 @@ export class NoteRepository extends Repository<Note> {
 			const tokens = packed.text ? parse(packed.text) : [];
 			packed.text = toString(tokens, { doNyaize: true });
 		}
-
+		//TODO: 2020/10/28 お嬢様口調への変換追加
 		if (!opts.skipHide) {
 			await this.hideNote(packed, meId);
 		}

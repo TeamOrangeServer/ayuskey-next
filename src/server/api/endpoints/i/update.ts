@@ -132,6 +132,13 @@ export const meta = {
 			}
 		},
 
+		isLady: {
+			validator: $.optional.bool,
+			desc: {
+				'ja-JP': 'お嬢様か否か'
+			}
+		},
+
 		injectFeaturedNote: {
 			validator: $.optional.bool,
 		},
@@ -219,6 +226,7 @@ export default define(meta, async (ps, user, token) => {
 	if (typeof ps.autoAcceptFollowed === 'boolean') profileUpdates.autoAcceptFollowed = ps.autoAcceptFollowed;
 	if (typeof ps.noCrawle === 'boolean') profileUpdates.noCrawle = ps.noCrawle;
 	if (typeof ps.isCat === 'boolean') updates.isCat = ps.isCat;
+	if (typeof ps.isLady === 'boolean') updates.isLady = ps.isLady;
 	if (typeof ps.injectFeaturedNote === 'boolean') profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
 	if (typeof ps.alwaysMarkNsfw === 'boolean') profileUpdates.alwaysMarkNsfw = ps.alwaysMarkNsfw;
 
