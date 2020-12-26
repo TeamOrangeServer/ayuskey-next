@@ -6,6 +6,10 @@ WORKDIR /misskey
 
 FROM base AS builder
 
+RUN cat /proc/cpuinfo
+RUN free
+RUN node -e 'console.log(Math.floor(v8.getHeapStatistics().heap_size_limit/1024/1024))'
+
 RUN apk add --no-cache \
     autoconf \
     automake \
