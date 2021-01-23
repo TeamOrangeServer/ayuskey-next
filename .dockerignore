@@ -12,3 +12,4 @@ elasticsearch/
 node_modules/
 redis/
 files/
+.config/

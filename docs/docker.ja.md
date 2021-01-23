@@ -22,15 +22,32 @@ Dockerを使ったMisskey構築方法
 
 	`git checkout master`
 
-*2.* 設定ファイルの作成と編集
+*2.* Dockerの設定
+----------------------------------------------------------------
+`docker-compose.yml`を編集してください。
+
+PostgreSQLの設定を記述する必要があります。  
+最低限記述する必要がある設定は次の通りです。
+
+| 設定                 | 内容         |
+|---------------------|--------------|
+| `POSTGRES_PASSWORD` | パスワード    |
+| `POSTGRES_USER`     | ユーザー名    |
+| `POSTGRES_DB`       | データベース名 |
+
+*3.* Misskeyのビルド
+----------------------------------------------------------------
+次のコマンドでMisskeyをビルドしてください:
+
+`docker-compose build`
+
+*4.* 設定ファイルの作成と編集
 ----------------------------------------------------------------
 
 下記コマンドで設定ファイルを作成してください。
 
 ```bash
-cd .config
-cp example.yml default.yml
-cp docker_example.env docker.env
+cp .config/example.yml .config/default.yml
 ```
 
 ### `default.yml`の編集
@@ -44,27 +61,6 @@ cp docker_example.env docker.env
 | Postgresql    |`db`     |
 | Redis         |`redis`  |
 | Elasticsearch |`es`     |
-
-### `docker.env`の編集
-
-このファイルはPostgresqlの設定を記述します。  
-最低限記述する必要がある設定は次の通りです。
-
-| 設定                 | 内容         |
-|---------------------|--------------|
-| `POSTGRES_PASSWORD` | パスワード    |
-| `POSTGRES_USER`     | ユーザー名    |
-| `POSTGRES_DB`       | データベース名 |
-
-*3.* Dockerの設定
-----------------------------------------------------------------
-`docker-compose.yml`を編集してください。
-
-*4.* Misskeyのビルド
-----------------------------------------------------------------
-次のコマンドでMisskeyをビルドしてください:
-
-`docker-compose build`
 
 *5.* データベースを初期化
 ----------------------------------------------------------------

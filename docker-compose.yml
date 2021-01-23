@@ -14,6 +14,7 @@ services:
       - internal_network
       - external_network
     volumes:
+      - ./.config/default.yml:/misskey/.config/default.yml
       - ./files:/misskey/files
 
   redis:
@@ -29,8 +30,10 @@ services:
     image: postgres:12.2-alpine
     networks:
       - internal_network
-    env_file:
-      - .config/docker.env
+    environment:
+      POSTGRES_PASSWORD: "example-misskey-pass"
+      POSTGRES_USER: "example-misskey-user"
+      POSTGRES_DB: "misskey"
     volumes:
       - ./db:/var/lib/postgresql/data
 
