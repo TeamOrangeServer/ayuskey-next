@@ -19,14 +19,14 @@
 			<Fa v-if="note.visibility === 'followers'" :icon="faUnlock"/>
 			<Fa v-if="note.visibility === 'specified'" :icon="faEnvelope"/>
 		</span>
-		<span class="localOnly" v-if="note.localOnly"><Fa :icon="faBiohazard"/></span>
+		<span class="localOnly" v-if="note.localOnly"><Fa :icon="faHeart"/></span>
 	</div>
 </header>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { faHome, faUnlock, faEnvelope, faMobileAlt, faBookmark, faBiohazard } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUnlock, faEnvelope, faMobileAlt, faBookmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import notePage from '../filters/note';
 import { userPage } from '../filters/user';
@@ -42,7 +42,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			faHome, faUnlock, faEnvelope, faMobileAlt, faBookmark, farBookmark, faBiohazard
+			faHome, faUnlock, faEnvelope, faMobileAlt, faBookmark, farBookmark, faHeart
 		};
 	},
 

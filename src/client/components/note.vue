@@ -32,7 +32,7 @@
 				<Fa v-if="note.visibility === 'followers'" :icon="faUnlock"/>
 				<Fa v-if="note.visibility === 'specified'" :icon="faEnvelope"/>
 			</span>
-			<span class="localOnly" v-if="note.localOnly"><Fa :icon="faBiohazard"/></span>
+			<span class="localOnly" v-if="note.localOnly"><Fa :icon="faHeart"/></span>
 		</div>
 	</div>
 	<article class="article" @contextmenu.stop="onContextmenu">
@@ -103,7 +103,7 @@
 
 <script lang="ts">
 import { computed, defineAsyncComponent, defineComponent, markRaw, ref } from 'vue';
-import { faSatelliteDish, faBolt, faTimes, faBullhorn, faStar, faLink, faExternalLinkSquareAlt, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faQuoteRight, faInfoCircle, faBiohazard, faPlug, faExclamationCircle, faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faSatelliteDish, faBolt, faTimes, faBullhorn, faStar, faLink, faExternalLinkSquareAlt, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faQuoteRight, faInfoCircle, faHeart, faPlug, faExclamationCircle, faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { faCopy, faTrashAlt, faEdit, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { parse } from '../../mfm/parse';
 import { sum, unique } from '../../prelude/array';
@@ -129,7 +129,7 @@ function markRawAll(...xs) {
 	}
 }
 
-markRawAll(faEdit, faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faBiohazard, faPlug, faSatelliteDish);
+markRawAll(faEdit, faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faHeart, faPlug, faSatelliteDish);
 
 export default defineComponent({
 	components: {
@@ -172,7 +172,7 @@ export default defineComponent({
 			collapsed: false,
 			isDeleted: false,
 			muted: false,
-			faEdit, faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faBiohazard, faPlug, faSatelliteDish
+			faEdit, faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faHeart, faPlug, faSatelliteDish
 		};
 	},
 

@@ -31,7 +31,7 @@
 		</button>
 		<div class="divider"></div>
 		<button class="_button localOnly" @click="localOnly = !localOnly" :class="{ active: localOnly }" data-index="5" key="localOnly">
-			<div><Fa :icon="faBiohazard"/></div>
+			<div><Fa :icon="faHeart"/></div>
 			<div>
 				<span>{{ $ts._visibility.localOnly }}</span>
 				<span>{{ $ts._visibility.localOnlyDescription }}</span>
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { faGlobe, faUnlock, faHome, faBiohazard, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faUnlock, faHome, faHeart, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import MkModal from '@/components/ui/modal.vue';
 
@@ -70,7 +70,7 @@ export default defineComponent({
 		return {
 			v: this.currentVisibility,
 			localOnly: this.currentLocalOnly,
-			faGlobe, faUnlock, faEnvelope, faHome, faBiohazard, faToggleOn, faToggleOff
+			faGlobe, faUnlock, faEnvelope, faHome, faHeart, faToggleOn, faToggleOff
 		}
 	},
 	watch: {

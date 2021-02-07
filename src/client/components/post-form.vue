@@ -10,7 +10,7 @@
 		<button v-if="!fixed" class="cancel _button" @click="cancel"><Fa :icon="faTimes"/></button>
 		<div>
 			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
-			<span class="local-only" v-if="localOnly"><Fa :icon="faBiohazard"/></span>
+			<span class="local-only" v-if="localOnly"><Fa :icon="faHeart"/></span>
 			<button class="_button visibility" @click="setVisibility" ref="visibilityButton" v-tooltip="$ts.visibility" :disabled="channel != null">
 				<span v-if="visibility === 'public'"><Fa :icon="faGlobe"/></span>
 				<span v-if="visibility === 'home'"><Fa :icon="faHome"/></span>
@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue';
-import { faReply, faQuoteRight, faPaperPlane, faTimes, faUpload, faPollH, faGlobe, faHome, faUnlock, faEnvelope, faPlus, faPhotoVideo, faAt, faBiohazard, faPlug } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faQuoteRight, faPaperPlane, faTimes, faUpload, faPollH, faGlobe, faHome, faUnlock, faEnvelope, faPlus, faPhotoVideo, faAt, faHeart, faPlug } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash, faLaughSquint } from '@fortawesome/free-regular-svg-icons';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { length } from 'stringz';
@@ -144,7 +144,7 @@ export default defineComponent({
 			recentHashtags: JSON.parse(localStorage.getItem('hashtags') || '[]'),
 			imeText: '',
 			postFormActions,
-			faReply, faQuoteRight, faPaperPlane, faTimes, faUpload, faPollH, faGlobe, faHome, faUnlock, faEnvelope, faEyeSlash, faLaughSquint, faPlus, faPhotoVideo, faAt, faBiohazard, faPlug
+			faReply, faQuoteRight, faPaperPlane, faTimes, faUpload, faPollH, faGlobe, faHome, faUnlock, faEnvelope, faEyeSlash, faLaughSquint, faPlus, faPhotoVideo, faAt, faHeart, faPlug
 		};
 	},
 
