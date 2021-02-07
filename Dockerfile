@@ -26,6 +26,7 @@ RUN apk add --no-cache \
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . ./
+COPY .git/ ./
 RUN yarn build
 
 FROM base AS runner
