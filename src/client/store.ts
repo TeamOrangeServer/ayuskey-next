@@ -146,11 +146,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showGapBetweenNotesInTimeline: {
 		where: 'device',
-		default: true
+		default: false
 	},
 	darkMode: {
 		where: 'device',
-		default: false
+		default: true
 	},
 	instanceTicker: {
 		where: 'device',
