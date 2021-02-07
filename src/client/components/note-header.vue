@@ -3,6 +3,8 @@
 	<MkA class="name" :to="userPage(note.user)" v-user-preview="note.user.id">
 		<MkUserName :user="note.user"/>
 	</MkA>
+	<span class="is-cat" v-if="note.user.isCat">cat</span>
+	<span class="is-lady" v-if="note.user.isLady">lady</span>
 	<span class="is-bot" v-if="note.user.isBot">bot</span>
 	<span class="username"><MkAcct :user="note.user"/></span>
 	<span class="admin" v-if="note.user.isAdmin"><Fa :icon="faBookmark"/></span>
@@ -72,6 +74,8 @@ export default defineComponent({
 		}
 	}
 
+	> .is-lady
+	> .is-cat
 	> .is-bot {
 		flex-shrink: 0;
 		align-self: center;
