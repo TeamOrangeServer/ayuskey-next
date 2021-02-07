@@ -20,11 +20,13 @@ RUN apk add --no-cache \
     python3 \
     zlib-dev \
     vips-dev \
-    vips
+    vips \
+		git
 
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . ./
+COPY .git/ ./
 RUN yarn build
 
 FROM base AS runner
