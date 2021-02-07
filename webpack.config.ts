@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as webpack from 'webpack';
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
+const { execSync } = require('child_process')
 
 class WebpackOnBuildPlugin {
 	constructor(readonly callback: (stats: any) => void) {
@@ -21,6 +22,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const locales = require('./locales');
 const meta = require('./package.json');
 
+const hash = execSync('git rev-parse --short HEAD');
+const version = `${meta.version}-${hash}`.replace("\n", "")
 const postcss = {
 	loader: 'postcss-loader',
 	options: {
@@ -131,7 +134,7 @@ module.exports = {
 	plugins: [
 		new webpack.ProgressPlugin({}),
 		new webpack.DefinePlugin({
-			_VERSION_: JSON.stringify(meta.version),
+			_VERSION_: JSON.stringify(version),
 			_LANGS_: JSON.stringify(Object.entries(locales).map(([k, v]: [string, any]) => [k, v._lang_])),
 			_ENV_: JSON.stringify(process.env.NODE_ENV),
 			_DEV_: process.env.NODE_ENV !== 'production',
@@ -144,12 +147,12 @@ module.exports = {
 		}),
 		new VueLoaderPlugin(),
 		new WebpackOnBuildPlugin((stats: any) => {
-			fs.writeFileSync('./built/meta.json', JSON.stringify({ version: meta.version }), 'utf-8');
+			fs.writeFileSync('./built/meta.json', JSON.stringify({ version: version }), 'utf-8');
 		}),
 	],
 	output: {
 		path: __dirname + '/built/client/assets',
-		filename: `[name].${meta.version}.js`,
+		filename: `[name].${version}.js`,
 		publicPath: `/assets/`,
 		pathinfo: false,
 	},
