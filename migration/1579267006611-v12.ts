@@ -10,7 +10,7 @@ export class v121579267006611 implements MigrationInterface {
         await queryRunner.query(`CREATE INDEX "IDX_8288151386172b8109f7239ab2" ON "announcement_read" ("userId") `, undefined);
         await queryRunner.query(`CREATE INDEX "IDX_603a7b1e7aa0533c6c88e9bfaf" ON "announcement_read" ("announcementId") `, undefined);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_924fa71815cfa3941d003702a0" ON "announcement_read" ("userId", "announcementId") `, undefined);
-        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "isVerified"`, undefined);
+//        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "isVerified"`, undefined);
         await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "announcements"`, undefined);
         await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "enableEmojiReaction"`, undefined);
         await queryRunner.query(`ALTER TABLE "announcement_read" ADD CONSTRAINT "FK_8288151386172b8109f7239ab28" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`, undefined);
@@ -22,7 +22,7 @@ export class v121579267006611 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "announcement_read" DROP CONSTRAINT "FK_8288151386172b8109f7239ab28"`, undefined);
         await queryRunner.query(`ALTER TABLE "meta" ADD "enableEmojiReaction" boolean NOT NULL DEFAULT true`, undefined);
         await queryRunner.query(`ALTER TABLE "meta" ADD "announcements" jsonb NOT NULL DEFAULT '[]'`, undefined);
-        await queryRunner.query(`ALTER TABLE "user" ADD "isVerified" boolean NOT NULL DEFAULT false`, undefined);
+//        await queryRunner.query(`ALTER TABLE "user" ADD "isVerified" boolean NOT NULL DEFAULT false`, undefined);
         await queryRunner.query(`DROP INDEX "IDX_924fa71815cfa3941d003702a0"`, undefined);
         await queryRunner.query(`DROP INDEX "IDX_603a7b1e7aa0533c6c88e9bfaf"`, undefined);
         await queryRunner.query(`DROP INDEX "IDX_8288151386172b8109f7239ab2"`, undefined);
