@@ -12,7 +12,7 @@ import { extractApHashtags } from './tag';
 import { apLogger } from '../logger';
 import { Note } from '../../../models/entities/note';
 import { updateUsertags } from '../../../services/update-hashtag';
-import { Users, UserNotePinings, Instances, DriveFiles, Followings, UserProfiles, UserPublickeys } from '../../../models';
+import { Users, Instances, DriveFiles, Followings, UserProfiles, UserPublickeys } from '../../../models';
 import { User, IRemoteUser } from '../../../models/entities/user';
 import { Emoji } from '../../../models/entities/emoji';
 import { UserNotePining } from '../../../models/entities/user-note-pining';
@@ -23,11 +23,11 @@ import { isDuplicateKeyValueError } from '../../../misc/is-duplicate-key-value-e
 import { toPuny } from '../../../misc/convert-host';
 import { UserProfile } from '../../../models/entities/user-profile';
 import { validActor } from '../../../remote/activitypub/type';
-import { getConnection } from 'typeorm';
-import { ensure } from '../../../prelude/ensure';
+import { getConnection, Not } from 'typeorm';
 import { toArray } from '../../../prelude/array';
 import { fetchInstanceMetadata } from '../../../services/fetch-instance-metadata';
 import { normalizeForSearch } from '../../../misc/normalize-for-search';
+import { resolveUser } from '../../resolve-user';
 
 const logger = apLogger;
 
@@ -146,7 +146,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	try {
 		// Start transaction
 		await getConnection().transaction(async transactionalEntityManager => {
-			user = await transactionalEntityManager.save(new User({
+			user = await transactionalEntityManager.insert(User, {
 				id: genId(),
 				avatarId: null,
 				bannerId: null,
@@ -167,9 +167,9 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				isBot,
 				isCat: (person as any).isCat === true,
 				isLady: (person as any).isLady === true
-			})) as IRemoteUser;
+			}).then(x => transactionalEntityManager.findOneOrFail(User, x.identifiers[0])) as IRemoteUser;
 
-			await transactionalEntityManager.save(new UserProfile({
+			await transactionalEntityManager.insert(UserProfile, {
 				userId: user.id,
 				description: person.summary ? htmlToMfm(person.summary, person.tag) : null,
 				url: getOneApHrefNullable(person.url),
@@ -177,27 +177,33 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				birthday: bday ? bday[0] : null,
 				location: person['vcard:Address'] || null,
 				userHost: host
-			}));
+			});
 
-			await transactionalEntityManager.save(new UserPublickey({
+			await transactionalEntityManager.insert(UserPublickey, {
 				userId: user.id,
 				keyId: person.publicKey.id,
 				keyPem: person.publicKey.publicKeyPem
-			}));
+			});
 		});
 	} catch (e) {
 		// duplicate key error
 		if (isDuplicateKeyValueError(e)) {
-			// /users/@a => /users/:id のように入力がaliasなときにエラーになることがあるのを対応
+			// 同じ@username@hostを持つものがあった場合、エラーで被った先を返す
 			const u = await Users.findOne({
-				uri: person.id
+				uri: Not(person.id as string),
+				usernameLower: person.preferredUsername!.toLowerCase(),
+				host,
 			});
 
 			if (u) {
-				user = u as IRemoteUser;
-			} else {
-				throw new Error('already registered');
+				throw {
+					code: 'DUPLICATED_USERNAME',
+					with: u,
+				};
 			}
+
+			logger.error(e);
+			throw e;
 		} else {
 			logger.error(e);
 			throw e;
@@ -405,7 +411,21 @@ export async function resolvePerson(uri: string, resolver?: Resolver): Promise<U
 
 	// リモートサーバーからフェッチしてきて登録
 	if (resolver == null) resolver = new Resolver();
-	return await createPerson(uri, resolver);
+
+	try {
+		return await createPerson(uri, resolver);
+	} catch (e) {
+		if (e.code === 'DUPLICATED_USERNAME') {
+			// uriからresolveしたユーザーを作成しようとしたら同じ @username@host が既に存在した場合にここに来る
+			const existUser = e.with as IRemoteUser;
+			logger.warn(`Duplicated username. input(uri=${uri}) exist(uri=${existUser.uri} username=${existUser.username}, host=${existUser.host})`);
+
+			// WebFinger(@username@host)からresync をトリガする (24時間以上古い場合)
+			resolveUser(existUser.username, existUser.host);
+		}
+
+		throw e;
+	}
 }
 
 const services: {
@@ -459,7 +479,7 @@ export function analyzeAttachments(attachments: IObject | IObject[] | undefined)
 }
 
 export async function updateFeatured(userId: User['id']) {
-	const user = await Users.findOne(userId).then(ensure);
+	const user = await Users.findOneOrFail(userId);
 	if (!Users.isRemoteUser(user)) return;
 	if (!user.featured) return;
 
@@ -482,18 +502,19 @@ export async function updateFeatured(userId: User['id']) {
 		.slice(0, 5)
 		.map(item => limit(() => resolveNote(item, resolver))));
 
-	// delete
-	await UserNotePinings.delete({ userId: user.id });
+	await getConnection().transaction(async transactionalEntityManager => {
+		await transactionalEntityManager.delete(UserNotePining, { userId: user.id });
 
-	// とりあえずidを別の時間で生成して順番を維持
-	let td = 0;
-	for (const note of featuredNotes.filter(note => note != null)) {
-		td -= 1000;
-		UserNotePinings.save({
-			id: genId(new Date(Date.now() + td)),
-			createdAt: new Date(),
-			userId: user.id,
-			noteId: note!.id
-		} as UserNotePining);
-	}
+		// とりあえずidを別の時間で生成して順番を維持
+		let td = 0;
+		for (const note of featuredNotes.filter(note => note != null)) {
+			td -= 1000;
+			transactionalEntityManager.insert(UserNotePining, {
+				id: genId(new Date(Date.now() + td)),
+				createdAt: new Date(),
+				userId: user.id,
+				noteId: note!.id
+			});
+		}
+	});
 }
