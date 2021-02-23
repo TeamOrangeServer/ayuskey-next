@@ -1,3 +1,12 @@
+# 既知の不具合
+
+## apiが無いことによるものは除きます
+
+* ログインできない
+  * ローカルストレージ、v11クライアントの`vuex/i`の中身を`account`にコピーしてください
+
+----
+
 [![Misskey](/assets/about/banner.svg)](https://join.misskey.page/)
 
 <h1 align="center">Misskey</h1>
