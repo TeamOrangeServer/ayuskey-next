@@ -17,7 +17,6 @@
 			</div>
 			<div class="right">
 				<button class="_button search" @click="search()"><Fa :icon="faSearch" class="icon"/><span>{{ $ts.search }}</span></button>
-				<button class="_buttonPrimary signup" @click="signup()">{{ $ts.signup }}</button>
 				<button class="_button login" @click="signin()">{{ $ts.login }}</button>
 			</div>
 		</div>
@@ -43,7 +42,6 @@
 import { defineComponent } from 'vue';
 import { faSearch, faHome, faFireAlt, faHashtag, faSatelliteDish, faBars } from '@fortawesome/free-solid-svg-icons';
 import XSigninDialog from '@/components/signin-dialog.vue';
-import XSignupDialog from '@/components/signup-dialog.vue';
 import * as os from '@/os';
 import { search } from '@/scripts/search';
 
@@ -69,12 +67,6 @@ export default defineComponent({
 	methods: {
 		signin() {
 			os.popup(XSigninDialog, {
-				autoSet: true
-			}, {}, 'closed');
-		},
-
-		signup() {
-			os.popup(XSignupDialog, {
 				autoSet: true
 			}, {}, 'closed');
 		},
@@ -178,12 +170,6 @@ export default defineComponent({
 					> .icon {
 						padding: 0 16px;
 					}
-				}
-
-				> .signup {
-					border-radius: 999px;
-					padding: 0 24px;
-					line-height: $height - 20px;
 				}
 
 				> .login {

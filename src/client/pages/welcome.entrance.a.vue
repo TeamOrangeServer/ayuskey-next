@@ -24,7 +24,6 @@
 					<div class="desc" v-html="meta.description || $ts.headlineMisskey"></div>
 				</div>
 				<div class="action">
-					<MkButton @click="signup()" inline primary>{{ $ts.signup }}</MkButton>
 					<MkButton @click="signin()" inline>{{ $ts.login }}</MkButton>
 				</div>
 				<div class="status" v-if="onlineUsersCount && stats">
@@ -52,7 +51,6 @@ import { defineComponent } from 'vue';
 import { faEllipsisH, faInfoCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { toUnicode } from 'punycode';
 import XSigninDialog from '@/components/signin-dialog.vue';
-import XSignupDialog from '@/components/signup-dialog.vue';
 import MkButton from '@/components/ui/button.vue';
 import XNote from '@/components/note.vue';
 import MkFeaturedPhotos from '@/components/featured-photos.vue';
@@ -105,12 +103,6 @@ export default defineComponent({
 	methods: {
 		signin() {
 			os.popup(XSigninDialog, {
-				autoSet: true
-			}, {}, 'closed');
-		},
-
-		signup() {
-			os.popup(XSignupDialog, {
 				autoSet: true
 			}, {}, 'closed');
 		},

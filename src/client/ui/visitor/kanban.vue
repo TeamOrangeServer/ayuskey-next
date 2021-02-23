@@ -11,7 +11,6 @@
 					<div class="desc" v-html="meta.description || $ts.introMisskey"></div>
 				</div>
 				<div class="action">
-					<button class="_buttonPrimary" @click="signup()">{{ $ts.signup }}</button>
 					<button class="_button" @click="signin()">{{ $ts.login }}</button>
 				</div>
 				<div class="announcements panel">
@@ -43,7 +42,6 @@ import { host, instanceName } from '@/config';
 import * as os from '@/os';
 import MkPagination from '@/components/ui/pagination.vue';
 import XSigninDialog from '@/components/signin-dialog.vue';
-import XSignupDialog from '@/components/signup-dialog.vue';
 import MkButton from '@/components/ui/button.vue';
 
 export default defineComponent({
@@ -97,11 +95,6 @@ export default defineComponent({
 			}, {}, 'closed');
 		},
 
-		signup() {
-			os.popup(XSignupDialog, {
-				autoSet: true
-			}, {}, 'closed');
-		}
 	}
 });
 </script>

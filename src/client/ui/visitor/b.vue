@@ -40,7 +40,6 @@
 			<MkA to="/featured" class="link" active-class="active"><Fa :icon="faFireAlt" class="icon"/>{{ $ts.featured }}</MkA>
 			<MkA to="/channels" class="link" active-class="active"><Fa :icon="faSatelliteDish" class="icon"/>{{ $ts.channel }}</MkA>
 			<div class="action">
-				<button class="_buttonPrimary" @click="signup()">{{ $ts.signup }}</button>
 				<button class="_button" @click="signin()">{{ $ts.login }}</button>
 			</div>
 		</div>
@@ -56,7 +55,6 @@ import { search } from '@/scripts/search';
 import * as os from '@/os';
 import MkPagination from '@/components/ui/pagination.vue';
 import XSigninDialog from '@/components/signin-dialog.vue';
-import XSignupDialog from '@/components/signup-dialog.vue';
 import MkButton from '@/components/ui/button.vue';
 import XHeader from './header.vue';
 import XKanban from './kanban.vue';
@@ -143,12 +141,6 @@ export default defineComponent({
 
 		signin() {
 			os.popup(XSigninDialog, {
-				autoSet: true
-			}, {}, 'closed');
-		},
-
-		signup() {
-			os.popup(XSignupDialog, {
 				autoSet: true
 			}, {}, 'closed');
 		}

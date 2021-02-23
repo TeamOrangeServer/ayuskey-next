@@ -13,6 +13,12 @@
 
 // ブロックの中に入れないと、定義した変数がブラウザのグローバルスコープに登録されてしまい邪魔なので
 (async () => {
+	// キャッシュ削除要求があれば従う
+	if (localStorage.getItem('shouldFlush') == 'true') {
+		refresh();
+		return;
+	}
+
 	const v = localStorage.getItem('v') || VERSION;
 
 	//#region Detect language & fetch translations
@@ -46,7 +52,7 @@
 	const head = document.getElementsByTagName('head')[0];
 
 	const script = document.createElement('script');
-	script.setAttribute('src', `/assets/app.${v}.js${salt}`);
+	script.setAttribute('src', `/assets/app.${VERSION}.js${salt}`);
 	script.setAttribute('async', 'true');
 	script.setAttribute('defer', 'true');
 	script.addEventListener('error', async () => {

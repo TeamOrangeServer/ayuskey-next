@@ -1,6 +1,7 @@
 import { markRaw, ref } from 'vue';
 import { Storage } from './pizzax';
 import { Theme } from './scripts/theme';
+import { instanceHost } from './config';
 
 export const postFormActions = [];
 export const userActions = [];

@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as webpack from 'webpack';
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
-const { execSync } = require('child_process')
+//const { execSync } = require('child_process')
 
 class WebpackOnBuildPlugin {
 	constructor(readonly callback: (stats: any) => void) {
@@ -22,8 +22,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const locales = require('./locales');
 const meta = require('./package.json');
 
-const hash = execSync('git rev-parse --short HEAD');
-const version = `${meta.version}-${hash}`.replace("\n", "")
+//const hash = execSync('git rev-parse --short HEAD');
+const version = `${meta.version}`//`${meta.version}-${hash}`.replace("\n", "")
 const postcss = {
 	loader: 'postcss-loader',
 	options: {
