@@ -1,6 +1,8 @@
 const address = new URL(location.href);
 const siteName = (document.querySelector('meta[property="og:site_name"]') as HTMLMetaElement)?.content;
 
+//export const instanceHost = "misskey.m544.net"
+//export const instanceHost = "xe.akirin.xyz"
 export const instanceHost = "kr.akirin.xyz"
 
 export const host = address.host;
