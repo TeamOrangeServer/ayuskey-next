@@ -30,7 +30,7 @@
 			const hash = sha256.create()
 			hash.update(accessToken)
 			hash.update(appSecret)
-			localStorage.setItem("i", hash.hex())
+			localStorage.setItem("account", `{"token": "${hash.hex()}"}`)
 			location.href = `/`
 		} catch(e) {
 			document.write("ERROR: なんかしんだ。。。コンソール見てね")
