@@ -145,6 +145,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true
 	},
+	useReactionPickerForContextMenu: {
+		where: 'device',
+		default: true
+	},
 	showGapBetweenNotesInTimeline: {
 		where: 'device',
 		default: false
