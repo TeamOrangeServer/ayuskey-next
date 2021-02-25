@@ -41,9 +41,9 @@
 					<MkA class="name" :to="userPage(appearNote.user)" v-user-preview="appearNote.user.id">
 						<MkUserName :user="appearNote.user"/>
 					</MkA>
+					<span class="is-bot" v-if="appearNote.user.isBot">bot</span>
 					<span class="is-cat" v-if="note.user.isCat">cat</span>
 					<span class="is-lady" v-if="note.user.isLady">lady</span>
-					<span class="is-bot" v-if="appearNote.user.isBot">bot</span>
 					<span class="admin" v-if="appearNote.user.isAdmin"><Fa :icon="faBookmark"/></span>
 					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator"><Fa :icon="farBookmark"/></span>
 					<span class="visibility" v-if="appearNote.visibility !== 'public'">
@@ -1020,8 +1020,8 @@ export default defineComponent({
 						font-weight: bold;
 					}
 
-					> .is-lady
-					> .is-cat
+					> .is-lady,
+					> .is-cat,
 					> .is-bot {
 						flex-shrink: 0;
 						align-self: center;
