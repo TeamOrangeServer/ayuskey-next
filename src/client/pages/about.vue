@@ -6,7 +6,11 @@
 	</div>
 	<FormGroup>
 		<FormKeyValueView>
-			<template #key>Misskey</template>
+			<template #key>Misskey BE</template>
+			<template #value>v{{ hostVersion }}</template>
+		</FormKeyValueView>
+		<FormKeyValueView>
+			<template #key>Misskey FE</template>
 			<template #value>v{{ version }}</template>
 		</FormKeyValueView>
 	</FormGroup>
@@ -41,7 +45,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { version, instanceName } from '@/config';
+import { version, hostVersion, instanceName } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormBase from '@/components/form/base.vue';
 import FormGroup from '@/components/form/group.vue';
@@ -64,6 +68,7 @@ export default defineComponent({
 				icon: faInfoCircle
 			},
 			version,
+			hostVersion,
 			instanceName,
 			stats: null,
 			faInfoCircle

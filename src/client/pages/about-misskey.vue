@@ -6,7 +6,8 @@
 			<div class="_formPanel panel" :class="{ playing: easterEggEngine != null }" ref="about">
 				<img src="/assets/about-icon.png" alt="" class="icon" ref="icon" @load="iconLoaded" draggable="false"/>
 				<div class="misskey">Misskey</div>
-				<div class="version">v{{ version }}</div>
+				<div class="version">v{{ hostVersion }} (BE)</div>
+				<div class="version">v{{ version }} (FE)</div>
 				<span class="emoji" v-for="emoji in easterEggEmojis" :key="emoji.id" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }"><MkEmoji class="emoji" :emoji="emoji.emoji" :custom-emojis="$instance.emojis" :is-reaction="false" :normal="true" :no-style="true"/></span>
 			</div>
 		</section>
@@ -55,7 +56,7 @@
 import { defineComponent } from 'vue';
 import { faInfoCircle, faCode, faLanguage, faHandHoldingMedical, } from '@fortawesome/free-solid-svg-icons';
 import VanillaTilt from 'vanilla-tilt';
-import { version } from '@/config';
+import { version, hostVersion } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormBase from '@/components/form/base.vue';
 import FormGroup from '@/components/form/group.vue';
@@ -124,6 +125,7 @@ export default defineComponent({
 			easterEggEmojis: [],
 			easterEggEngine: null,
 			faInfoCircle, faCode, faLanguage, faHandHoldingMedical,
+			hostVersion,
 		}
 	},
 
