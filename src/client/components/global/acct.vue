@@ -8,13 +8,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { toUnicode } from 'punycode';
-import { host } from '@/config';
+import { instanceHost } from '@/config';
 
 export default defineComponent({
 	props: ['user', 'detail'],
 	data() {
 		return {
-			host: toUnicode(host),
+			host: toUnicode(instanceHost),
 		};
 	}
 });
