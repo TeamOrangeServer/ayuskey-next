@@ -2,11 +2,14 @@
 
 ## apiが無いことによるものは除きます
 
-* 通知が動作しない
+* 通知が動作しない => Ayuskey上では対策した(未リリース)
 
 ----
 
-* 現在、m544とayuskeyでテストされています
+* 現在、m544とAyuskeyでテストされています
+* 最新のFEを試す([Orange Kr](https://kr.akirin.xyz/)のアカウントが必要) => <http://edge.v12fe.akirin.xyz/>
+* 参考にしたもの
+  * <https://github.com/CookieRamen/misskey/tree/v11-front>
 
 ----
 
