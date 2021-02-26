@@ -7,7 +7,7 @@
 ----
 
 * 現在、m544とAyuskeyでテストされています
-* 最新のFEを試す([Orange Kr](https://kr.akirin.xyz/)のアカウントが必要) => <http://edge.v12fe.akirin.xyz/>
+* 最新のFEを試す([Orange Kr](https://kr.akirin.xyz/)のアカウントが必要) => <https://edge.v12fe.akirin.xyz/>
 * 参考にしたもの
   * <https://github.com/CookieRamen/misskey/tree/v11-front>
 
