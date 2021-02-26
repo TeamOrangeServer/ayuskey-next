@@ -23,7 +23,8 @@ window.onerror = (e) => {
 		return;
 	}
 
-	const v = localStorage.getItem('v') || VERSION;
+	//const v = localStorage.getItem('v') || VERSION;
+	const v = VERSION;
 
 	//#region Detect language & fetch translations
 	if (localStorage.hasOwnProperty('locale')) {
