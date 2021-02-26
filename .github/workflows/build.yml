@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - v12-fe
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn install
+    - name: Build
+      run: NODE_ENV=production yarn build
+    - uses: actions/checkout@v2
+      with:
+        ref: v12-fe-build-result
+        path: ./build-result
+    - run: rm -rf ./build-result/* && cp -r ./built/client/* ./build-result/
+    - run: |
+        cd build-result
+        git config --local user.email "41898282@users.noreply.github.com"
+        git config --local user.name "GitHub Actions"
+        git add -A .
+        git commit -m "update"
+        git push
