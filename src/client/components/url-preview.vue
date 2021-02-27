@@ -36,7 +36,7 @@
 import { defineComponent } from 'vue';
 import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'; 
-import { url as local, lang } from '@/config';
+import { url as local, lang, instanceHost } from '@/config';
 import * as os from '@/os';
 
 export default defineComponent({
@@ -103,7 +103,7 @@ export default defineComponent({
 
 		requestUrl.hash = '';
 
-		fetch(`https://summaly.arkjp.net/url?url=${encodeURIComponent(requestUrl.href)}&lang=${requestLang}`).then(res => {
+		fetch(`https://${instanceHost}/url?url=${encodeURIComponent(requestUrl.href)}&lang=${requestLang}`).then(res => {
 			res.json().then(info => {
 				if (info.url == null) return;
 				this.title = info.title;
