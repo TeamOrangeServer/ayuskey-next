@@ -1,7 +1,7 @@
 {
 	"short_name": "Misskey",
 	"name": "Misskey",
-	"start_url": "/",
+	"start_url": "https://edge.v12fe.akirin.xyz/",
 	"display": "standalone",
 	"background_color": "#313a42",
 	"theme_color": "#86b300",
