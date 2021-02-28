@@ -31,6 +31,7 @@
 			hash.update(accessToken)
 			hash.update(appSecret)
 			localStorage.setItem("account", `{"token": "${hash.hex()}"}`)
+			localStorage.setItem("i", `${hash.hex()}`)
 			location.href = `/`
 		} catch(e) {
 			document.write("ERROR: なんかしんだ。。。コンソール見てね")
