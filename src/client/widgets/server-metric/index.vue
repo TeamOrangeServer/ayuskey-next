@@ -65,7 +65,7 @@ export default defineComponent({
 		os.api('server-info', {}).then(res => {
 			this.meta = res;
 		});
-		this.connection = os.stream.useSharedConnection('serverStats');
+		this.connection = os.stream.useSharedConnection('serverStatsV12');
 	},
 	unmounted() {
 		this.connection.dispose();

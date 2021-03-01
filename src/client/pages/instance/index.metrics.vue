@@ -172,7 +172,7 @@ export default defineComponent({
 		os.api('admin/server-info', {}).then(res => {
 			this.serverInfo = res;
 
-			this.connection = os.stream.useSharedConnection('serverStats');
+			this.connection = os.stream.useSharedConnection('serverStatsV12');
 			this.connection.on('stats', this.onStats);
 			this.connection.on('statsLog', this.onStatsLog);
 			this.connection.send('requestLog', {
