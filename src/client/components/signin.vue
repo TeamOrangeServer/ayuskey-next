@@ -77,6 +77,8 @@ export default defineComponent({
 						'read:page-likes',
 						'read:user-groups',
 						'write:user-groups',
+						'read:registry',
+						'write:registry',
 					],
 					callbackUrl: `${location.origin}/callback.html#domain=${instanceHost}`
 				})
