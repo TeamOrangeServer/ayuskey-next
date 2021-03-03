@@ -40,7 +40,7 @@ export default defineComponent({
 	},
 	methods: {
 		onStats(stats) {
-			this.usage = stats.cpu;
+			this.usage = stats.cpu_usage;
 		}
 	}
 });

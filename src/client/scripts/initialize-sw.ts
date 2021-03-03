@@ -8,7 +8,7 @@ export async function initializeSw() {
 		('serviceWorker' in navigator) &&
 		('PushManager' in window) &&
 		$i && $i.token) {
-		//navigator.serviceWorker.register(`/assets/sw.${version}.js`, {scope: ""});
+		//navigator.serviceWorker.register(`/assets/sw.${version}.js`);
 		const sw = `/assets/sw.${version}.js`;
 
 		navigator.serviceWorker.register(sw).then(registration => {

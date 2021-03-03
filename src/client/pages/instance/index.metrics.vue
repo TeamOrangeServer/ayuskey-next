@@ -172,7 +172,7 @@ export default defineComponent({
 		os.api('admin/server-info', {}).then(res => {
 			this.serverInfo = res;
 
-			this.connection = os.stream.useSharedConnection('serverStatsV12');
+			this.connection = os.stream.useSharedConnection('serverStats');
 			this.connection.on('stats', this.onStats);
 			this.connection.on('statsLog', this.onStatsLog);
 			this.connection.send('requestLog', {
@@ -441,9 +441,9 @@ export default defineComponent({
 		onStats(stats) {
 			if (this.paused) return;
 
-			const cpu = (stats.cpu * 100).toFixed(0);
+			const cpu = (stats.cpu_usage * 100).toFixed(0);
 			const memActive = (stats.mem.active / this.serverInfo.mem.total * 100).toFixed(0);
-			const memUsed = (stats.mem.used / this.serverInfo.mem.total * 100).toFixed(0);
+			const memUsed = (stats.mem.used / stats.mem.total * 100).toFixed(0);
 			this.memUsage = stats.mem.active;
 
 			this.chartCpuMem.data.labels.push('');
