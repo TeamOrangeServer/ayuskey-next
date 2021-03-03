@@ -8,7 +8,16 @@ export async function initializeSw() {
 		('serviceWorker' in navigator) &&
 		('PushManager' in window) &&
 		$i && $i.token) {
-		navigator.serviceWorker.register(`/assets/sw.${version}.js`);
+		//navigator.serviceWorker.register(`/assets/sw.${version}.js`, {scope: ""});
+		const sw = `/assets/sw.${version}.js`;
+
+		navigator.serviceWorker.register(sw).then(registration => {
+			// 登録成功
+			console.log('[sw] Registration successful with scope: ', registration.scope);
+		}).catch(err => {
+			// 登録失敗 :(
+				console.log('[sw] Registration failed: ', err);
+		});
 
 		navigator.serviceWorker.ready.then(registration => {
 			registration.active?.postMessage({
