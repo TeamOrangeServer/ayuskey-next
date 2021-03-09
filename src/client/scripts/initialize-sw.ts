@@ -20,6 +20,8 @@ export async function initializeSw() {
 		});
 
 		navigator.serviceWorker.ready.then(registration => {
+			console.log('[sw] ready: ', registration);
+
 			registration.active?.postMessage({
 				msg: 'initialize',
 				lang,
