@@ -9,6 +9,8 @@ import { toString } from '../../mfm/to-string';
 import { parse } from '../../mfm/parse';
 import { Emoji } from '../entities/emoji';
 import { concat } from '../../prelude/array';
+import parseAcct from '../../misc/acct/parse';
+import { resolveUser } from '../../remote/resolve-user';
 
 export type PackedNote = SchemaType<typeof packedNoteSchema>;
 
@@ -142,6 +144,8 @@ export class NoteRepository extends Repository<Note> {
 				url: string
 			}[];
 
+			const accts = emojiNames.filter(n => n.startsWith('@'));
+
 			// カスタム絵文字
 			if (emojiNames?.length > 0) {
 				const tmp = await Emojis.find({
@@ -155,6 +159,25 @@ export class NoteRepository extends Repository<Note> {
 						name: emoji.name,
 						url: emoji.url,
 					};
+				}));
+
+				all = concat([all, tmp]);
+			}
+
+			if (accts.length > 0) { 
+				const tmp = await Promise.all(
+					accts
+						.map(acct => ({ acct, parsed: parseAcct(acct) }))
+						.map(async ({ acct, parsed }) => {
+							const user = await resolveUser(parsed.username.toLowerCase(), parsed.host || note.userHost).catch(() => null);
+							return ({ acct, user: user ? await Users.pack(user) : undefined })
+						})
+				).then(users => users.filter((u) => u.user != null).map(u => {
+					const res = {
+						name: u.acct,
+						url: u.user?.avatarUrl || ''
+					};
+					return res;
 				}));
 
 				all = concat([all, tmp]);
