@@ -48,7 +48,7 @@ export default defineComponent({
 			this.signing = true;
 		  try {
 				const res: {secret: string, id: string} = await os.api("app/create", {
-					name: "misskey-v12-front",
+					name: "Misskey v12FE",
 					description: "Misskey v12のフロントだけ切り出したやつ",
 					permission: [
 						'read:account',
